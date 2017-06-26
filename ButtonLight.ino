@@ -91,7 +91,7 @@ void loop(){
     light1 = false;
     light2 = true;
   }else if (light2 == true){
-    for(int i = minPin; i<=maxPinmaxPin; i++){
+    for(int i = minPin; i<=maxPin; i++){
       digitalWrite(i,LOW);
     }
     digitalWrite(4,HIGH);
