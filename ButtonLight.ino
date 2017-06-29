@@ -1,8 +1,14 @@
+#include <EEPROM.h>
+
 int buttonPin = 1;
 int lightPin = 2;
 int buttonState = 0;
 int minPin = 2;
 int maxPin = 5;
+int eeAdress1 = 0;
+int eeAdress2 = 1;
+int eeAdress3 = 2;
+int eeAdress4 = 3;
 
 long buttonTimer;
 long timeout = 5000;
@@ -42,8 +48,8 @@ void loop(){
     buttonState = digitalRead(buttonPin);
   
     if(buttonState == HIGH){
-      Serial.print("im high+ ");
-      Serial.println(buttonTimer);
+      Serial.print("Button Pressed ");
+      Serial.println(buttonState);
       //Button pressed
       if(!longPressActive){}
     
@@ -77,7 +83,19 @@ void loop(){
   }
   
   void turnLightOn(){
-  if(light1 ==false && light2 == false && light3 == false && (light4 ==false || light4 == true)){
+    EEPROM.get(eeAdress1, light1);
+    EEPROM.get(eeAdress2, light2);
+    EEPROM.get(eeAdress3, light3);
+    EEPROM.get(eeAdress4, light4);
+
+    Serial.println("");
+    Serial.print("Hejsvejs ");
+    Serial.println(light1);
+    Serial.println(light2);
+    Serial.println(light3);
+    Serial.println(light4);
+    
+  if(light1 == false && light2 == false && light3 == false && (light4 ==false || light4 == true)){
     for(int i = minPin; i<=maxPin; i++){
       digitalWrite(i,LOW);
     }  
@@ -105,5 +123,10 @@ void loop(){
     light3 = false;
     light4 = true;
   }
+    EEPROM.put(eeAdress1, light1);
+    EEPROM.put(eeAdress2, light2);
+    EEPROM.put(eeAdress3, light3);
+    EEPROM.put(eeAdress4, light4);
+
 }
   void lightOff(){}
